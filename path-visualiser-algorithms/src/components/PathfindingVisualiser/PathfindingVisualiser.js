@@ -15,7 +15,7 @@ function PathfindingVisualiser() {
                     isStart: row === 10 && col === 5,
                     isFinish: row === 10 && col === 45
                 }
-                currentRow.push([]);
+                currentRow.push(currentNode);
             }
             node.push(currentRow);
         }
@@ -29,8 +29,13 @@ function PathfindingVisualiser() {
                 return (
                     <div key={i}>
                         {row.map((node, idx) => {
-                            const {isStart, isFinish} = node;
-                            return <Node key={idx} isFinish={isFinish} isStart={isStart} test={'foo'} test={'kappa'}/>
+                        const {isStart, isFinish} = node;
+                        return <Node 
+                            key={idx} 
+                            isFinish={isFinish} 
+                            isStart={isStart} 
+                            test={'foo'}
+                            />
                         })}
                     </div>
                 )
