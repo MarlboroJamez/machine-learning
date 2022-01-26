@@ -412,8 +412,115 @@ tf.reduce_sum(E).numpy()
 import tensorflow_probability as tfp
 tfp.stats.variance(E).numpy()
 
+# Making use of a alternative method for finding the variance
+tf.math.reduce_variance(tf.cast(E, dtype=tf.float16)).numpy()
+
 # Find the standard deviation
 tf.math.reduce_std(tf.cast(E, dtype=tf.float32)).numpy()
 
-"""## Find the positional Maximum & Minimum"""
+"""## Find the positional Maximum & Minimum
+
+
+"""
+
+# Create new tensor for finding the positional min & max
+tf.random.set_seed(42) # Setting the global seed
+F = tf.random.uniform(shape=[50])
+F
+
+# Find the positional max
+tf.argmax(F).numpy()
+
+# Index on our largest position
+F[tf.argmax(F)].numpy()
+
+# Find the largest value of F
+tf.reduce_max(F).numpy()
+
+# Check for equality
+F[tf.argmax(F)] == tf.reduce_max(F)
+
+# Finding the min position
+F[tf.argmin(F)].numpy()
+
+# Finding the min value
+tf.reduce_min(F).numpy()
+
+# Check for equality
+F[tf.argmin(F)] == tf.reduce_min(F)
+
+"""### Squeezing a Tensor (removing all single dimensions)"""
+
+# Create a tensor to get started
+tf.random.set_seed(42) # Setting the global seed
+G = tf.constant(tf.random.uniform(shape=[50]), shape=(1,1,1,1,50)) #adding a few single dimensions to the start
+G
+
+# Squeezing our tensor (removing single dimensions)
+G_squeezed = tf.squeeze(G)
+G_squeezed
+
+"""### One-hot in coding tensors (form of numerical encoding)
+
+💡 For categorical variables where no such ordinal relationship exists, the integer encoding is not enough.
+
+In fact, using encoding and allowing the model to assume a natural ordering between categories may result in poor performance or unexpected results (predictions halfway between categories).
+
+In this case, a one-hot encoding can be applied to the integer reprenstation. This is where the integer encoded variable is removed and a new binary variable is added for each unique integer value.
+"""
+
+# Create a list of indices
+some_list = [0,1,2,3] # could be red, green, blue & purple
+
+# One-hot encode our list of indices
+tf.one_hot(some_list, depth=4).numpy()
+
+# Specify custom values for one hot encoding
+tf.one_hot(some_list, depth=4, on_value="Hello", off_value="Bye").numpy()
+
+"""### A Few mathmatical operations
+* Squaring 
+* Log
+* Square root
+"""
+
+# Create a new tensor
+H= tf.range(1,10)
+H
+
+# Sqaure it
+tf.square(H).numpy()
+
+# Square root (will error, method requires non-int type, so changing it to float32/float16 would work like below)
+tf.sqrt(tf.cast(H, dtype=tf.float32)).numpy()
+
+# Find the Log (will error, method requires non-int type, so changing it to float32/float16 would work like below)
+tf.math.log(tf.cast(H, dtype=tf.float32)).numpy()
+
+"""### Tensors and NumPy
+
+TensorFlow reacts beautifully with NumPy arrays
+
+
+"""
+
+# Create a tensor directly from a NumPy array
+J = tf.constant(np.array([3,6,7,8]))
+J
+
+# Convert our tensor back to a NumPy array
+np.array(J), type(np.array(J))
+
+# Convert tensor J to NumPy array
+J.numpy(), type(J.numpy())
+
+# The default type of each are slighlty different
+numpy_J = tf.constant(np.array([3,7,9,10]))
+tensor_J = tf.constant([3,7,9,10])
+
+# Be aware if you do convert your NumPy array to Tensors, they may have a different 
+# data type where you would create your Tensor directly from TensorFlow
+
+# Check the data types of each
+numpy_J.dtype,tensor_J.dtype
 
