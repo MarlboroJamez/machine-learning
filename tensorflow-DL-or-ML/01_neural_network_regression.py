@@ -509,5 +509,41 @@ mse_3 = mse(y_test, y_pred_3)
 print('MAE: ', mae_3.numpy(), '\n')
 print('MSE: ', mse_3.numpy())
 
-"""### Comparing the results of our experiments"""
+"""🔑 **Note**: You want to start with small experiments (small models) and make sure they work and then increase their scale when necessary.
+
+### Comparing the results of our experiments
+"""
+
+# Let's compare our model results using a pandas DataFrame (just a table)
+import pandas as pd
+
+model_results = [['model_1', mae_1.numpy(), mse_1.numpy()],
+                 ['model_2', mae_2.numpy(), mse_2.numpy()],
+                 ['model_3', mae_3.numpy(), mse_3.numpy()]]
+
+all_results = pd.DataFrame(model_results, columns=["MODEL", "MAE", "MSE"])
+
+all_results
+
+"""Looks like model_1 & model_2 had performed the best"""
+
+model_2.summary()
+
+"""🔑 **Note**: One of our main goals should be to minimize the time between experiments. The more experiments you do, the more things you'll figure out which don't work in turn, get closer to figuring out what does work. Remember the machine learning practinior's motto: "experiment, experiment, experiment".
+
+### Tracking your experiments
+
+One really good habit in machine learning modelling is to track the results of your experiments.
+
+And when doing so, it can be tidious if you're running lots of experiments.
+
+Luckily there are tools that help us with this!
+
+📖 Resource: As you build more models, you'll want to look into using:
+
+* TensorBoard - a component of the TensorFlow library to help track modelling experiments (we'll try this later)
+* Weights & Biases - a tool for tracking all kinds of machine learning experiments (plugs straight into TensorBoard).
+
+## Saving our Models
+"""
 
