@@ -386,11 +386,11 @@ mse
 
 # Let's create helper functions to reuse MAE & MSE
 def mae(y_true, y_pred):
-  return tf.metrics.mean_absolute_error(y_true=y_true, y_pred=y_pred)
+  return tf.metrics.mean_absolute_error(y_true=y_true, y_pred=tf.squeeze(y_pred))
 
 
 def mse(y_true, y_pred):
-  return tf.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
+  return tf.metrics.mean_squared_error(y_true=y_true, y_pred=tf.squeeze(y_pred))
 
 """### Running experiments to improve our model
 
@@ -398,5 +398,116 @@ def mse(y_true, y_pred):
 Build a model -> fit it -> evaluate it -> tweak it -> and so on
 ```
 
+Again, there are many different ways you can do this, but 3 of the main ones are:
+1. **Get more data** - get more examples for your model to train on (more opportunities to learn patterns).
+2. **Make your model larger (use a more complex model)** - this might come in the form of more layers or more hidden units in each layer.
+3. **Train for longer** - give your model more of a chance to find the patterns in the data.
+
+Since we created our dataset, we could easily make more data but this isn't always the case when you're working with real-world datasets.
+
+To do so, we'll build 3 models and compare their results:
+1. ```model_1``` - same as original model, 1 layer, trained for 100 epochs.
+2. ```model_2``` - 2 layers, trained for 100 epochs.
+3. ```model_3``` - 2 layers, trained for 500 epochs.
 """
+
+# Build model_1
+
+# Set random seed
+tf.random.set_seed(42)
+
+# Create the model
+model_1 = tf.keras.Sequential([
+  tf.keras.layers.Dense(1)
+])
+
+# Compile the model
+model_1.compile(loss='mae',
+              optimizer=tf.keras.optimizers.SGD(),
+              metrics=['mae'])
+
+# Fit the model
+model_1.fit(tf.expand_dims(X_train, axis=-1), y_train, epochs=100, verbose=0)
+
+# Make and plot predictions for model_1
+
+# The test data, because remember our model has never seen the test data, but trained on the "train_data 80%"
+y_pred_1 = model.predict(X_test)
+
+plot_predictions(predictions=y_pred_1)
+
+# Calculate model_1 evaluation metrics
+
+mae_1 = mae(y_test, y_pred_1)
+mse_1 = mse(y_test, y_pred_1)
+
+print('MAE: ', mae_1.numpy(), '\n')
+print('MSE: ', mse_1.numpy())
+
+# Build model_2
+
+# set seed
+tf.random.set_seed(42)
+
+# build model
+model_2 = tf.keras.Sequential([
+    tf.keras.layers.Dense(10),
+    tf.keras.layers.Dense(1)
+])
+
+# Compile the model
+model_2.compile(loss='mae',
+                optimizer=tf.keras.optimizers.SGD(),
+                metrics=['mse'])
+
+# Fit the model
+model_2.fit(tf.expand_dims(X_train, axis=-1), y_train, epochs=100, verbose=0)
+
+# Plot the predictions of model_2
+
+y_pred_2 = model_2.predict(X_test)
+
+plot_predictions(predictions=y_pred_2)
+
+# Check Model 2 Evaluation Metrics
+mse_2 = mse(y_test, y_pred_2)
+mae_2 = mae(y_test, y_pred_2)
+
+
+print('MAE: ', mae_2.numpy(), '\n')
+print('MSE: ', mse_2.numpy())
+
+# Build Model_3
+
+# set seed
+tf.random.set_seed(42)
+
+# Build model
+model_3 = tf.keras.Sequential([
+  tf.keras.layers.Dense(20),
+  tf.keras.layers.Dense(1)
+])
+
+# Compile model
+model_3.compile(loss='mae',
+                optimizer=tf.keras.optimizers.SGD(),
+                metrics=['mae'])
+
+# Fit the model
+model_3.fit(tf.expand_dims(X_train, axis=-1), y_train, epochs=500, verbose=0)
+
+# Plot the predictions
+y_pred_3 = model.predict(X_test)
+
+plot_predictions(predictions=y_pred_3)
+
+# Evaulate predictions
+mae_3 = mae(y_test, y_pred_3)
+mse_3 = mse(y_test, y_pred_3)
+
+
+print('MAE: ', mae_3.numpy(), '\n')
+print('MSE: ', mse_3.numpy())
+
+"""### Comparing the results of our experiments"""
 
