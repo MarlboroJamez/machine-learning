@@ -277,8 +277,9 @@ tf.random.set_seed(42)
 
 # Create the model
 model = tf.keras.Sequential([
-    tf.keras.layers.Dense(1, input_shape=[1])
-])
+    tf.keras.layers.Dense(20, input_shape=[1], name="input_layer"),
+    tf.keras.layers.Dense(1, name="output_layer")
+], name="Model_1")
 
 # Compile the model
 model.compile(loss='mae',
@@ -303,3 +304,99 @@ model.summary()
 
 # Let's fit our model to training data
 model.fit(tf.expand_dims(X_train, axis=-1), y_train, epochs=100, verbose=0) # Verbose 0 meaning there will be no output CTRL + SHIFT
+
+# Get a summary of our model
+model.summary()
+
+# Another way on visualizing our model
+from tensorflow.keras.utils import plot_model
+plot_model(model=model, show_shapes=True)
+
+"""### Visualizing our models predictions
+
+To visualize predictions, it's a good ideas to plot them against the ground truth labels (y_test).
+
+* Ground Truth Data: refers to the actual nature of the problem that is the target of a machine learning model, reflected by the relevant data sets associated with the use case in question. (To simplify it, use case towards data sets that are being tested against and for this section we are doing tests agaist our y_labels with our X_data, so y_labels would be seen as the ground truth) 
+
+Often you'll see this in the form of `y_test` or `y_true` versus `y_pred` (ground truth versus your model's predictions).
+"""
+
+# Make some predictions
+y_pred = model.predict(X_test)
+y_pred
+
+y_test
+
+"""🔑 Note: If you feel like you're going to reuse some kind of functionality in the future, it's a good idea to put it into a function."""
+
+# Let's create a plotting function
+def plot_predictions(train_data=X_train, 
+                     train_labels=y_train,
+                     test_data=X_test,
+                     test_labels=y_test,
+                     predictions=y_pred):
+  """
+  Plots training data, test data and compares predictions to ground truth labels
+  """
+  # Setting diagram size
+  plt.figure(figsize=(10,7))
+
+  # Plot training data in blue
+  plt.scatter(train_data, train_labels, c="b", label="Training data")
+
+  # Plot test data in green
+  plt.scatter(test_data, test_labels, c="g", label="Testing data")
+
+  # Plot models prediction in red
+  plt.scatter(test_data, predictions, c="r", label="Predictions")
+
+  plt.legend()
+
+plot_predictions(train_data=X_train,train_labels=y_train,test_data=X_test,test_labels=y_test,predictions=y_pred)
+
+"""### Evaluating our model's predictions with regression evaluation metrics
+
+Depending on the problem you're working on, there will be different evaluation metrics to evaluate your model's perfomance.
+
+Since we're working on a regression, two of the main metrics are:
+* **Mean absolute error (MAE)** - the mean difference between each of the predictions.
+* **Mean squared error (MSE)** - the squared mean difference between of the predictions, "square the average errors" (use if larger errors are more detrimental than smaller errors).
+"""
+
+# Evaluate the model on test set
+model.evaluate(X_test, y_test)
+
+# Calculate the mean absolute error
+#tf.keras.losses.MAE()
+mae = tf.metrics.mean_absolute_error(y_true=y_test, y_pred=tf.constant(y_pred))
+mae
+
+tf.constant(y_pred)
+
+y_test
+
+tf.squeeze(y_pred)
+
+# Calculate the mean absolute error
+tf.metrics.mean_absolute_error(y_true=y_test, y_pred=tf.squeeze(y_pred))
+
+# Calculate the mean squared error
+mse = tf.metrics.mean_squared_error(y_true=y_test, y_pred=tf.squeeze(y_pred))
+mse
+
+# Let's create helper functions to reuse MAE & MSE
+def mae(y_true, y_pred):
+  return tf.metrics.mean_absolute_error(y_true=y_true, y_pred=y_pred)
+
+
+def mse(y_true, y_pred):
+  return tf.metrics.mean_squared_error(y_true=y_true, y_pred=y_pred)
+
+"""### Running experiments to improve our model
+
+```
+Build a model -> fit it -> evaluate it -> tweak it -> and so on
+```
+
+"""
+
