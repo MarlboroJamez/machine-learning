@@ -610,5 +610,119 @@ files.download("neural_network_regression_HDF5.h5")
 from google.colab import files
 files.download("neural_network_regression")
 
-"""## A Larger example"""
+"""## A Larger example
+
+We're going to try predict the cost of medical insurance for individuals based on a number of different parameters such as, ```age```, ```sex```, ```bmi``, ```children```, ```smoking_status``` and ```residential_region```.
+
+To do, we'll leverage the pubically available [Medical Cost Dataset](https://www.kaggle.com/mirichoi0218/insurance) available from Kaggle and [hosted on Github](https://github.com/stedy/Machine-Learning-with-R-datasets/blob/master/insurance.csv)
+
+🔑 **Note**: When learning machine learning paradigms (a pattern or model), you'll often go through a series of foundational techniques and then practice them by working with open-source datasets and examples. Just as we're doing now, learn foundations, put them to work with different problems. Every time you work on something new, it's a good idea to search for something like "problem X example with Python/TensorFlow" where you substitute X for your problem.
+"""
+
+# Import the required libraries
+import tensorflow as tf
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+
+# Read in the insurance dataset
+insurance = pd.read_csv("https://raw.githubusercontent.com/MarlboroJamez/machine-learning/main/tensorflow-DL-or-ML/datasets/insurance.csv")
+insurance
+
+"""We're going to have to turn the non-numerical columns into numbers (because a neural network can't handle non-numerical inputs).
+
+To do so, we'll use the ```get_dummies()``` method in pandas.
+
+It converts categorical variables (like the ```sex```, ```smoker``` and ```region``` columns) into numerical variables using **one-hot** encoding.
+"""
+
+# Let's try and one-hot encode our dataframe so that it's all numbers
+insurance_one_hot = pd.get_dummies(insurance)
+insurance_one_hot.head()
+
+"""# Now we'll split data into features (X) and labels (y)."""
+
+# Create x and y values features and labels
+X = insurance_one_hot.drop("charges", axis=1) # We don't need charges included to our features/predictions (independent variables)
+Y = insurance_one_hot["charges"] # Dependent variables
+
+# View X
+X.head()
+
+# View Y
+Y.head()
+
+# Create Training and Testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+len(X), len(X_train), len(X_test)
+
+X_train.shape
+
+# Building the model
+
+# setting the seed
+tf.random.set_seed(42)
+
+# Creating the model
+insurance_model = tf.keras.Sequential([
+      tf.keras.layers.Dense(100),
+      tf.keras.layers.Dense(10),
+      tf.keras.layers.Dense(1)
+])
+
+# compile the model
+insurance_model.compile(loss='mae',
+              optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),
+              metrics=['mae'])
+
+# fit the model
+history = insurance_model.fit(X_train, y_train, epochs=200, verbose=0)
+
+# insurance_model summary
+insurance_model.summary()
+
+# Evaluate the test data
+insurance_model.evaluate(X_test, y_test)
+
+# If we take a look at our evaluation, we notice that on a average our model is off by 4615.4634,
+# Where the average value of y_train is 13346.0897, that's considerable since the total amount is only 13346.0897.
+# Our median shows 9575.4421 so if we're off by 4615.4634, we might be charging them with 5000+, where they should be charged with 9575.4421
+                   
+                   # Avg insurance cost
+y_train.median() , y_train.mean()# The median value is the value in the middle => .median()
+
+# Plot history (also known as a loss curve or a training curve)
+pd.DataFrame(history.history).plot()
+plt.ylabel("loss")
+plt.xlabel("epochs")
+
+"""❓ **Question**: How long should you train for?
+
+It depends. Really... it depends on the problem you're working on. However, many people have asked this question before... so TensorFlow has a solution! It's called the [EarlyStopping Callback](https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping), which is a TensorFlow component you can add to your model to stop training once it stops improving a certain metric.
+
+## Preprocessing data (normalization and standardization)
+
+A common practice when working with neural networks is to make sure all of the data you pass to them is in the range 0 to 1.
+
+This practice is called **normalization** (scaling all values from their original range to, e.g. between 0 and 100,000 to be between 0 and 1).
+
+There is another process call **standardization** which converts all of your data to unit variance and 0 mean.
+
+These two practices are often part of a preprocessing pipeline (a series of functions to prepare your data for use with neural networks).
+
+
+Knowing this, some of the major steps you'll take to preprocess your data for a neural network include:
+* Turning all of your data to numbers (a neural network can't handle strings).
+* Making sure your data is in the right shape (verifying input and output shapes).
+* [Feature Scaling](https://scikit-learn.org/stable/modules/preprocessing.html#preprocessing-scaler)
+  * Normalizing data (making sure all values are between 0 and 1). This is done by subtracting the minimum value then dividing by the maximum value minus the minmum. This is also referred to as min-max scaling.
+  * Standardization (making sure all values have a mean of 0 and a variance of 1). This is done by substracting the mean value from the target feature and then dividing it by the standard deviation.
+  * Which one should you use?
+    * **With neural networks you'll tend to favour normalization** as they tend to prefer values between 0 and 1 (you'll see this espcially with image processing), however, you'll often find a neural network can perform pretty well with minimal feature scaling.
+
+
+> 📖 **Resource**: For more on preprocessing data, I'd recommend reading the following resources:
+   * [Scikit-Learn's documentation on preprocessing data.](https://scikit-learn.org/stable/modules/preprocessing.html#preprocessing-data)
+   * [Scale, Standardize or Normalize with Scikit-Learn by Jeff Hale.](https://towardsdatascience.com/scale-standardize-or-normalize-with-scikit-learn-6ccc7d176a02)
+"""
 
