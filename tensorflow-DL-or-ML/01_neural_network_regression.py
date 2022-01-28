@@ -39,8 +39,6 @@ house_price = tf.constant([939700]
                           )
 house_info, house_price
 
-
-
 input_shape = X[0].shape
 output_shape = y[0].shape
 
@@ -266,7 +264,7 @@ model.compile(loss='mae',
 
 """# Visualizing the model"""
 
-model.summary()
+model.summary() # Meant to error :)
 
 X[0], y[0]
 
@@ -611,3 +609,6 @@ files.download("neural_network_regression_HDF5.h5")
 
 from google.colab import files
 files.download("neural_network_regression")
+
+"""## A Larger example"""
+
