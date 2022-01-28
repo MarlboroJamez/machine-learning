@@ -545,5 +545,69 @@ Luckily there are tools that help us with this!
 * Weights & Biases - a tool for tracking all kinds of machine learning experiments (plugs straight into TensorBoard).
 
 ## Saving our Models
+
+You can save a TensorFlow/Keras model using ```model.save()```.
+
+
+There are two ways to save a model in TensorFlow:
+1. The [SavedModel format](https://www.tensorflow.org/tutorials/keras/save_and_load#savedmodel_format) (default).
+2. The [HDF5 format](https://www.tensorflow.org/tutorials/keras/save_and_load#hdf5_format)
+
+
+The main difference between the two is the SavedModel is automatically able to save custom objects (such as special layers) without additional modifications when loading the model back in.
+
+Which one should you use?
+
+It depends on your situation but the SavedModel format will suffice most of the time.
+
+Both methods use the same method call.
 """
 
+# Save model using the SavedModelFormat
+model_2.save("neural_network_regression")
+
+# Save model using the HDF5 Format
+model_2.save("neural_network_regression_HDF5.h5")
+
+"""## Loading Saved Models"""
+
+# Loading model (SavedModelFormat)
+loaded_SavedModel_format = tf.keras.models.load_model("neural_network_regression")
+loaded_SavedModel_format.summary()
+
+# Compare Model 2 predictions with SavedModelFormat model predictions
+model_2_preds = model_2.predict(X_test)
+loaded_SavedModel_format_preds = loaded_SavedModel_format.predict(X_test)
+
+model_2_preds == loaded_SavedModel_format_preds
+
+mae(y_true=y_test, y_pred=model_2_preds) == mae(y_true=y_test, y_pred=loaded_SavedModel_format_preds)
+
+# Loading model (HDF5) format
+loaded_h5_model = tf.keras.models.load_model("neural_network_regression_HDF5.h5")
+loaded_h5_model.summary()
+
+# Compare Model 2 predictions with HDF5 model predictions
+model_2_preds = model_2.predict(X_test)
+loaded_h5_model_preds = loaded_h5_model.predict(X_test)
+
+model_2_preds == loaded_h5_model_preds
+
+mae(y_true=y_test, y_pred=model_2_preds) == mae(y_true=y_test, y_pred=loaded_h5_model_preds)
+
+"""## Download a model (or any other file) from Google Colab?
+
+Say you wanted to get your model from Google Colab to your local machine, you can do one of the following things:
+
+* Right click on the file in the files pane and click 'download'.
+* Use the code below.
+
+```
+from google.colab import files
+files.download("neural_network_regression_HDF5.h5")
+
+```
+"""
+
+from google.colab import files
+files.download("neural_network_regression")
