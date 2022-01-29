@@ -653,10 +653,10 @@ X.head()
 Y.head()
 
 # Create Training and Testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42) # By default setting the data to tensors
 len(X), len(X_train), len(X_test)
 
-X_train.shape
+X_train
 
 # Building the model
 
@@ -724,5 +724,113 @@ Knowing this, some of the major steps you'll take to preprocess your data for a 
 > 📖 **Resource**: For more on preprocessing data, I'd recommend reading the following resources:
    * [Scikit-Learn's documentation on preprocessing data.](https://scikit-learn.org/stable/modules/preprocessing.html#preprocessing-data)
    * [Scale, Standardize or Normalize with Scikit-Learn by Jeff Hale.](https://towardsdatascience.com/scale-standardize-or-normalize-with-scikit-learn-6ccc7d176a02)
+"""
+
+X
+
+X["age"].plot(kind="hist") # scale 20 - 60
+
+X["bmi"].plot(kind="hist") # scale 15 - 50
+
+X["children"].plot(kind="hist") # scale 0 - 5
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import tensorflow as tf
+
+# Reading in the insurance dataframe
+insurance = pd.read_csv("https://raw.githubusercontent.com/MarlboroJamez/machine-learning/main/tensorflow-DL-or-ML/datasets/insurance.csv")
+insurance
+
+"""We need to transform the non-numerical columns into numbers and this time we'll also be normalizing the numerical columns with different ranges (to make sure they're all between 0 and 1).
+
+To do this, we're going to use a few classes from Scikit-Learn:
+* ```make_column_transformer``` - build a multi-step data preprocessing function for the folllowing trnasformations:
+   * ```MinMaxScaler``` - make sure all numerical columns are normalized (between 0 and 1).
+   * ```OneHotEncoder``` - one hot encode the non-numerical columns.
+
+"""
+
+from sklearn.compose import make_column_transformer
+from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
+
+# Create column transformer
+ct = make_column_transformer(
+    (MinMaxScaler(), ['age','bmi','children']), # turn all values in these columns between 0 and 1
+    (OneHotEncoder(handle_unknown="ignore"), ["sex", "smoker", "region"])
+)
+
+
+# Create X and Y values
+X = insurance.drop("charges", axis=1)
+y = insurance["charges"]
+
+
+# Build our trand and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
+
+# Fit the column transformer to our training data
+ct.fit(X_train)
+
+# Transform training and test data with normalizeation (MinMaxScaler and OneHotEncoder)
+X_train_normal = ct.transform(X_train) 
+X_test_normal = ct.transform(X_test)
+
+# What does our data look like now? (what it originally was)
+X_train.loc[0]
+
+X_train_normal[0]
+
+# how has our shape changed?
+X_train.shape, X_train_normal.shape
+
+"""## Beautiful! Data has been normalized and one hot encoded.
+
+Now let's build a neural network model on it.
+"""
+
+insurance_model.summary()
+
+# Building the model
+
+# setting the seed
+tf.random.set_seed(42)
+
+# Creating the model
+insurance_model = tf.keras.Sequential([
+      tf.keras.layers.Dense(100),
+      tf.keras.layers.Dense(10),
+      tf.keras.layers.Dense(1)
+])
+
+# compile the model
+insurance_model.compile(loss='mae',
+              optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),
+              metrics=['mae'])
+
+# fit the model
+history = insurance_model.fit(X_train_normal, y_train, epochs=200)
+
+# Evaluate our insurance model on normalize data
+insurance_model.evaluate(X_test_normal, y_test)
+
+# Un-normalized data evaluation results
+# 9/9 [==============================] - 0s 1ms/step - loss: 3186.3911 - mae: 3186.3911
+
+# Plot history (also known as a loss curve or a training curve)
+pd.DataFrame(history.history).plot()
+plt.ylabel("loss")
+plt.xlabel("epochs")
+
+"""This is **one of the main benefits of normalization**: faster convergence time (a fancy way of saying, your model gets to better results faster).
+
+# 📖 Extra curriculum
+
+* [MIT introduction deep learning lecture 1](https://youtu.be/njKP3FqW3Sk) - gives a great overview of what's happening behind all of the code we're running.
+* Reading: 1-hour of [Chapter 1 of Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/chap1.html) by Michael Nielson - a great in-depth and hands-on example of the intuition behind neural networks.
+* Practice your regression modelling with TensorFlow, also have a look at [Lion Bridge's collection of datasets](https://lionbridge.ai/datasets/) or [Kaggle's datasets](https://www.kaggle.com/data), find a regression dataset which sparks your interest and try to model.
 """
 
