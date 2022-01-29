@@ -12,3 +12,4 @@
 ### What's being covered so far?
 * Tensorflow basics & fundamentals 
 * Neural Network Regression 
+* Neural Network Classification
