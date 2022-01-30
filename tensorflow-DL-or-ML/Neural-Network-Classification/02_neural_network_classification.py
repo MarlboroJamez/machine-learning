@@ -197,7 +197,83 @@ def plot_decision_boundary(model, X, y):
   plt.xlim(xx.min(), xx.max())
   plt.ylim(yy.min(), yy.max())
 
-"""Now we've got a function to plot our model's decision boundary (the cut off point its making between red and blue dots), let's try it out."""
+"""Now we've got a function to plot our model's decision boundary (the cut off point is making between red and blue dots), let's try it out."""
 
 # Check out the predictions our model is making 
 plot_decision_boundary(model_3, X, y)
+
+"""Looks like our model is trying to draw a straight line through the data.
+
+What's wrong with doing this?
+
+The main issue is our data isn't separable by a straight line.
+
+In a regression problem, our model might work. In fact, let's try it.
+"""
+
+# Set random seed
+tf.random.set_seed(42)
+
+# Create some regression data
+X_regression = np.arange(0, 1000, 5)
+y_regression = np.arange(100, 1100, 5)
+
+# Split it into training and test sets
+X_reg_train = X_regression[:150]
+X_reg_test = X_regression[150:]
+y_reg_train = y_regression[:150]
+y_reg_test = y_regression[150:]
+
+# Fit our model to the data
+# Note: Before TensorFlow 2.7.0, this line would work
+# model_3.fit(X_reg_train, y_reg_train, epochs=100)
+
+# After TensorFlow 2.7.0, see here for more: https://github.com/mrdbourke/tensorflow-deep-learning/discussions/278
+model_3.fit(tf.expand_dims(X_reg_train, axis=-1), 
+            y_reg_train,
+            epochs=100)
+
+model_3.summary()
+
+"""Oh wait... we compiled our model for a binary classification problem.
+
+No trouble, we can recreate it for a regression problem.
+"""
+
+# Setup random seed
+tf.random.set_seed(42)
+
+# Recreate the model
+model_3 = tf.keras.Sequential([
+  tf.keras.layers.Dense(100),
+  tf.keras.layers.Dense(10),
+  tf.keras.layers.Dense(1)
+])
+
+# Change the loss and metrics of our compiled model
+model_3.compile(loss=tf.keras.losses.mae, # change the loss function to be regression-specific
+                optimizer=tf.keras.optimizers.Adam(),
+                metrics=['mae']) # change the metric to be regression-specific
+
+# Fit the recompiled model
+model_3.fit(tf.expand_dims(X_reg_train, axis=-1), 
+            y_reg_train, 
+            epochs=100)
+
+# Make predictions with our trained model
+y_reg_preds = model_3.predict(y_reg_test)
+
+# Plot the model's predictions against our regression data
+plt.figure(figsize=(10, 7))
+plt.scatter(X_reg_train, y_reg_train, c='b', label='Training data')
+plt.scatter(X_reg_test, y_reg_test, c='g', label='Testing data')
+plt.scatter(X_reg_test, y_reg_preds.squeeze(), c='r', label='Predictions')
+plt.legend();
+
+"""Okay, the predictions aren't perfect (if the predictions were perfect, the red would line up with the green), but they look better than complete guessing.
+
+So this means our model must be learning something...
+
+There must be something we're missing out on for our classification problem.
+"""
+
