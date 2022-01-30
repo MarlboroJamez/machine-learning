@@ -38,5 +38,22 @@ Specifically, we're going to go through doing the following with TensorFlow:
   - Visualizng the model ("visualize, visualize, visualize")
   - Looking at training curves
   - Compare predictions to ground truth (using our evaluation metrics)
+
+## Creating data to view and fit
 """
 
+from sklearn.datasets import make_circles
+
+# Make 1000 examples
+n_samples = 2000
+
+# Create circles
+X, y = make_circles(n_samples,
+                    noise=0.03,
+                    random_state=42)
+
+# Checking out the features
+X
+
+# Check the labels
+y
