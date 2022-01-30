@@ -6,6 +6,7 @@
 * [MIT 6.S191 (2020): Introduction to Deep Learning](https://www.youtube.com/watch?v=njKP3FqW3Sk) 
 
 # Tools
+* [TensorFlow Playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.96899&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false)
 * [Weights & Biases - Developer tools for ML](https://wandb.ai/site)
 * [TensorFlow Board](https://www.tensorflow.org/tensorboard)
 
