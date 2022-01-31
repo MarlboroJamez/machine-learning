@@ -368,3 +368,6 @@ model_7.evaluate(X, y)
 
 # Visualizing our predictions
 plot_decision_boundary(model_7, X, y)
+
+"""❓ Question: What's wrong with the predictions we have made? Are we really evaluating our model correctly? Hint: what data did the model learn on and what data did we predict on?"""
+
