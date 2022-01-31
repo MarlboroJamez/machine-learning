@@ -275,5 +275,96 @@ plt.legend();
 So this means our model must be learning something...
 
 There must be something we're missing out on for our classification problem.
+
+# The missing piece: Non-linearity
 """
 
+# Set random seed
+tf.random.set_seed(42)
+
+# Create model
+model_4 = tf.keras.Sequential([
+    tf.keras.layers.Dense(1, activation=tf.keras.activations.linear)
+])
+
+# Compile th model
+model_4.compile(loss='binary_crossentropy',
+                optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+                metrics=['accuracy'])
+
+# Fit the model
+history = model_4.fit(X, y, epochs=100)
+
+# Check out our data
+plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.RdYlBu)
+
+# Check the decision boundary for out latest model
+plot_decision_boundary(model=model_4, X=X, y=y)
+
+"""Building our first neural network with a non-linear activation function"""
+
+# Setting the random seed
+tf.random.set_seed(42)
+
+# Create model expect a linear activation
+model_5 = tf.keras.Sequential([
+    tf.keras.layers.Dense(1, activation='relu')                          
+])
+
+# Compiling the model
+model_5.compile(loss='binary_crossentropy',
+                optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+                metrics=['accuracy'])
+
+# Fitting the model
+history = model_5.fit(X, y, epochs=100)
+
+# Setting random seed
+tf.random.set_seed(42)
+
+# Creating the model
+model_6 = tf.keras.Sequential([
+      tf.keras.layers.Dense(4, activation='relu'),
+      tf.keras.layers.Dense(4, activation='relu'),
+      tf.keras.layers.Dense(1)
+])
+
+# Compiling the model
+model_6.compile(loss='binary_crossentropy',
+                optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+                metrics=['accuracy'])
+
+# Fitting the model
+history = model_6.fit(X, y, epochs=250, verbose=0)
+
+# Evaluate the model
+model_6.evaluate(X, y)
+
+# How do our model predictions look like?
+plot_decision_boundary(model_6, X, y)
+
+# Implementing a output activation functionas well
+
+# random seed
+tf.random.set_seed(42)
+
+# Creating the model
+model_7 = tf.keras.Sequential([
+  tf.keras.layers.Dense(4, activation='relu'),
+  tf.keras.layers.Dense(4, activation='relu'),
+  tf.keras.layers.Dense(1, activation='sigmoid')
+])
+
+# Compiling the model
+model_7.compile(loss='binary_crossentropy',
+                optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+                metrics=['accuracy'])
+
+# Fitting the model
+model_7.fit(X, y, epochs=200)
+
+# Evaluating the model
+model_7.evaluate(X, y)
+
+# Visualizing our predictions
+plot_decision_boundary(model_7, X, y)
