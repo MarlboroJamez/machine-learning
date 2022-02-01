@@ -13,7 +13,7 @@
 * [TensorFlow Board](https://www.tensorflow.org/tensorboard)
 
 # Certifications
-[kaggle - Introduction to Machine Learning](/Certifications/kaggle/IntroToMachineLearning.png)
+[kaggle - Introduction to Machine Learning](https://github.com/MarlboroJamez/machine-learning/blob/main/tensorflow-DL-or-ML/Certifications/kaggle/IntroToMachineLearning.png)
 
 ### What's being covered so far?
 * Tensorflow basics & fundamentals 
