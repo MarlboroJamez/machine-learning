@@ -1,0 +1,1 @@
+This project is a start on developing web app acting as a canvas to neural style art and the implementation of VQGD+CLIP model implementation.
