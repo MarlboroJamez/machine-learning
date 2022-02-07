@@ -1,11 +1,21 @@
 import './styles/App.css';
-import Globe from './assets/video/hologram.mov';
+import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
+import Home from './pages/home'
+import Login from './pages/login'
+import Register from './pages/register'
 
 function App() {
   return (
-    <div className="App h-screen w-screen bg-zinc-900">
-      <video loop  autoplay preload="none" class="video" src={Globe} type="video" ></video>
-    </div>
+    <Router>  
+      <div className="overflow-x-hidden font-mono App h-screen w-screen bg-zinc-900">
+        <Switch>
+          {/* PUBLIC */}
+          <Route exact path="/" component={Home}/>
+          <Route exact path="/login" component={Login}/>
+          <Route exact path="/register" component={Register}/>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
