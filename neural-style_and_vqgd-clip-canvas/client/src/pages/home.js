@@ -8,6 +8,7 @@ import HomeCard from '../components/cards/homeCard';
 import PageDivider from '../components/dividers/page';
 import HomeIntroCard from '../components/cards/homeIntro';
 import HomeFAQ from '../components/cards/homeFAQ';
+import RegisterTodayCard from '../components/cards/registerToday';
 
 function Home() {
   return (
@@ -16,11 +17,12 @@ function Home() {
       
       <div className="p-20">
         <HomeIntroCard AIFace={AIFace}/>
-        <PageDivider/>
+          <PageDivider/>
         <HomeCard/>
-        <PageDivider/>
+          <PageDivider/>
         <HomeFAQ/>
-        <PageDivider/>
+        <RegisterTodayCard/>
+          <PageDivider/>
       </div>
   </div>)
 }
