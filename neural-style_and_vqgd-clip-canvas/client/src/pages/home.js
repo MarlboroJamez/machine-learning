@@ -1,29 +1,33 @@
 import React from 'react';
-import Header from '../components/header/header';
+
+//Assets
 import AIFace from '../assets/images/AIFace.png';
 
-
 //components
+import Header from '../components/header/header';
+import Footer from '../components/footer/footer';
 import HomeCard from '../components/cards/homeCard';
 import PageDivider from '../components/dividers/page';
 import HomeIntroCard from '../components/cards/homeIntro';
 import HomeFAQ from '../components/cards/homeFAQ';
-import RegisterTodayCard from '../components/cards/registerToday';
+import HomeRegisterTodayCard from '../components/cards/homeRegisterToday';
+import HomeBlogCard from '../components/cards/homeBlog';
 
 function Home() {
   return (
   <div>
     <Header/>
-      
       <div className="p-20">
         <HomeIntroCard AIFace={AIFace}/>
-          <PageDivider/>
+        <PageDivider/>
         <HomeCard/>
-          <PageDivider/>
+        <PageDivider/>
         <HomeFAQ/>
-        <RegisterTodayCard/>
-          <PageDivider/>
+        <HomeRegisterTodayCard/>
+        <PageDivider/>
+        <HomeBlogCard/>
       </div>
+    <Footer/>
   </div>)
 }
 

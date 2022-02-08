@@ -20,7 +20,7 @@ function Header() {
                         Contact
                     </li>
                     <li className="mr-4 cursor-pointer outline-none border-none hover:text-cyan-400 p-2 text-stone-200 text-lg font-regular">
-                        What is GPT-3?
+                        Blog
                     </li>
                     <li className="cursor-pointer outline-none border-none hover:text-cyan-400 p-2 text-stone-200 text-lg font-regular">
                         Case Studies
