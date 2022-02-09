@@ -5,6 +5,7 @@ import React from 'react';
 import StartCreating from '../buttons/startCreating';
 import SummaryUnit from '../units/summary';
 
+
 function homeCard() {
   return (
     <div className="mt-48 w-full h-116 flex p-10 rounded bg-gradient-to-r from-deepblue-900 via-cyan-800 to-purple-900">
