@@ -1,8 +1,5 @@
 import React from 'react';
 
-//Components 
-import StartCreating from '../buttons/startCreating';
-
 function footer() {
   return (
       <div className="h-132 bg-charcoal-800 w-full justify-center flex">
@@ -11,7 +8,7 @@ function footer() {
               Try out AI generated artwork before others
             </h1>
 
-            <div className="mt-18 ml-74">
+            <div className="mt-28 ml-74">
               <button className="text-stone-200 font-bold text-4xl pl-8 pr-8 pb-4 pt-4 rounded-lg border-2 border-cyan-600 hover:border-cyan-400">
                 Get Started
               </button>

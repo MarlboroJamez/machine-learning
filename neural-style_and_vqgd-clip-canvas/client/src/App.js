@@ -1,8 +1,12 @@
 import './styles/App.css';
 import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
-import Home from './pages/home'
-import Login from './pages/login'
-import Register from './pages/register'
+
+//Pages
+import Home from './pages/home';
+import Contact from './pages/contact';
+import Blog from './pages/blog';
+import SignIn from './pages/signIn';
+import SignUp from './pages/signUp';
 
 function App() {
   return (
@@ -11,8 +15,10 @@ function App() {
         <Switch>
           {/* PUBLIC */}
           <Route exact path="/" component={Home}/>
-          <Route exact path="/login" component={Login}/>
-          <Route exact path="/register" component={Register}/>
+          <Route exact path="/contact" component={Contact}/>
+          <Route exact path="/blog" component={Blog}/>
+          <Route exact path="/signin" component={SignIn}/>
+          <Route exact path="/signup" component={SignUp}/>
         </Switch>
       </div>
     </Router>
