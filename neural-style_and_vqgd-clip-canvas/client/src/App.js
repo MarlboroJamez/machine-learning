@@ -1,12 +1,15 @@
 import './styles/App.css';
 import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
 
-//Pages
+//Pages (Public)
 import Home from './pages/home';
 import Contact from './pages/contact';
 import Blog from './pages/blog';
 import SignIn from './pages/signIn';
 import SignUp from './pages/signUp';
+
+//Pages (Private)
+import Dashboard from './pages/dashboard';
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
           <Route exact path="/blog" component={Blog}/>
           <Route exact path="/signin" component={SignIn}/>
           <Route exact path="/signup" component={SignUp}/>
+
+          {/* Private */}
+          <Route exact path="/dashboard" component={Dashboard}/>
         </Switch>
       </div>
     </Router>

@@ -8,22 +8,40 @@ function SignUp() {
     const [dialog, setDialog] = useState(false);
     const [pass, setPass] = useState(false);
 
-    let introTxt = "Hi there, my name is James and I'm here to assist you, let's get you started by signing you up.";
+    let introTxt = "Hi there, my name is Mario and I'm here to assist you, let's get you started by signing you in.";
+    let welcomeTxt = "Welcome Back!"
     let i = 0;
     let speed = 70;
     
     useEffect(() => {
-        setTimeout(() => {
-            setDialog(true);
-            typeWriter();
-        }, 2000);
+        if(!localStorage.getItem('dialog')){
+            localStorage.setItem('dialog', true)
+            setTimeout(() => {
+                setDialog(true);
+                introWriter();
+            }, 2000);
+        } else {
+            setTimeout(() => {
+                setDialog(true);
+                welcomeWriter();
+            }, 2000);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
-    function typeWriter(){
+    function introWriter(){
         if(i < introTxt.length){
             document.getElementById("text").innerHTML += introTxt.charAt(i);
             i++;
-            setTimeout(typeWriter, speed);
+            setTimeout(introWriter , speed);
+        }
+    }
+
+    function welcomeWriter(){
+        if(i < welcomeTxt.length){
+            document.getElementById("text").innerHTML += welcomeTxt.charAt(i);
+            i++;
+            setTimeout(welcomeWriter , speed);
         }
     }
 
@@ -31,7 +49,7 @@ function SignUp() {
       <div className="pt-20 pl-20 pr-20">
           <div className="flex">
                 <div className="flex flex-5">
-                    <div className={dialog ? 'ml-108 fixed z-50 mt-106 w-96 p-4 rounded-lg bg-stone-100 border-2 border-cyan-500': 'hidden'}>
+                    <div className={dialog ? 'ml-108 fixed z-50 mt-106 w-auto max-w-96 p-4 rounded-lg bg-stone-100 border-2 border-cyan-500': 'hidden'}>
                         <label id="text" className="font-medium text-lg">
                         </label>
                     </div>
@@ -64,16 +82,16 @@ function SignUp() {
                             )}
                         </div>
                         <p className="ml-2 mt-4 text-lg text-stone-200">
-                            Don't have a account yet? 
-                            <Link to="/signup">
+                            Do you have an account? 
+                            <Link to="/signin">
                                 <mark className="cursor-pointer hover:underline bg-transparent text-cyan-400 font-medium hover:text-cyan-500">
-                                    Register Now
+                                    Sign In Now
                                 </mark>.
                             </Link>  
                         </p>
                     </div>
                     <button className="text-stone-200 font-bold mt-4 rounded-xl pl-4 pr-4 pt-2 pb-2 border-cyan-600 border-2 hover:border-cyan-400">
-                            Sign In
+                            Sign Up
                     </button>
                 </div>
           </div>
