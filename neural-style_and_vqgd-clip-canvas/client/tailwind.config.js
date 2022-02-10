@@ -4,6 +4,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      borderRadius: {
+        'aibot':'50px'
+      },
       flex: {
         1: '1 1 10%',
         2: '1 1 25%',
@@ -57,6 +60,7 @@ module.exports = {
         22: '5.5rem',
         26: '6.5rem',
         46: '11.5rem',
+        70: '17.5rem',
         82: '22rem',
         84: '24rem',
         86: '26rem',
@@ -68,6 +72,7 @@ module.exports = {
         104: '32rem',
         106: '34rem',
         108: '36rem',
+        109: '37.5rem',
         110: '40rem',
         112: '42rem',
         114: '44rem',
