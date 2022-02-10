@@ -8,14 +8,14 @@ function SignUp() {
     const [dialog, setDialog] = useState(false);
     const [pass, setPass] = useState(false);
 
-    let introTxt = "Hi there, my name is Mario and I'm here to assist you, let's get you started by signing you in.";
-    let welcomeTxt = "Welcome Back!"
+    let introTxt = "Hi there, my name is James and I'm here to assist you, let's get you started by signing you up.";
+    let welcomeTxt = "It's good to see you're back, welcome!"
     let i = 0;
     let speed = 70;
     
     useEffect(() => {
-        if(!localStorage.getItem('dialog')){
-            localStorage.setItem('dialog', true)
+        if(!localStorage.getItem('dialogr')){
+            localStorage.setItem('dialogr', true)
             setTimeout(() => {
                 setDialog(true);
                 introWriter();
