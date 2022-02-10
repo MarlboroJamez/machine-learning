@@ -31,9 +31,17 @@ function Avatar() {
             <li className="text-stone-200 font-medium text-base hover:text-cyan-400 cursor-pointer p-2">
               Account Settings
             </li>
-            <li className="text-stone-200 font-medium text-base hover:text-cyan-400 cursor-pointer p-2">
-              Feedback / Support
-            </li>
+            <div className="flex m-2">
+              <li className="text-stone-200 font-medium text-base hover:text-cyan-400 cursor-pointer ">
+                Feedback 
+              </li>
+              <li className="text-stone-200">
+                /
+              </li>
+              <li className="text-stone-200 font-medium text-base hover:text-cyan-400 cursor-pointer">
+                Support
+              </li>
+            </div>
             <li className="mb-2 text-stone-200 font-medium text-base hover:text-cyan-400 cursor-pointer p-2">
               Terms of Service
             </li>
