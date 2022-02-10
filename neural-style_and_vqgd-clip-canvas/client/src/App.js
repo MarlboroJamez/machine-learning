@@ -10,6 +10,8 @@ import SignUp from './pages/signUp';
 
 //Pages (Private)
 import Dashboard from './pages/dashboard';
+import StyleTransfer from './pages/styleTransfer';
+import TextToStyle from './pages/textToStyle';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
 
           {/* Private */}
           <Route exact path="/dashboard" component={Dashboard}/>
+          <Route exact path="/dashboard/style/transfer" component={StyleTransfer}/>
+          <Route exact path="/dashboard/style/text" component={TextToStyle}/>
         </Switch>
       </div>
     </Router>
